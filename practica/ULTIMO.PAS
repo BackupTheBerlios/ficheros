@@ -9,6 +9,7 @@ Var   teclado,a:String;
       ent,sal:pagina;
       F:file;
 
+{pide un dia en string tal que '31' y nos devuelve codificado en un char}
 function codificaDia(dia:String):Char;
 var diaI,m:integer;
 Begin
@@ -52,7 +53,7 @@ begin
    end;
 
 
-
+{no se yo lo del caracter si no fallara}
 function codificaAnio(anio:String):Char;
 var anioI,m:integer;
 Begin
@@ -91,24 +92,25 @@ begin
 end;
 
 
-Function CodificarFormato(Formato:String):Char;
+Function codificaFormato(Formato:String):Char;
 Var n,m:Integer;
 Begin
           {Lo codificamos como enumerado solo hay 7 formatos as¡ que solo usaremos
           1 numero (1 byte) para su codificaci¢n}
-          If Formato='Libro' then
-             Formato:='1'
-          else If Formato='Revista' then
-                  Formato:='2'
-          else If Formato='Video' then
-                  Formato:='3'
-          else If Formato='CD-Rom' then
-                  Formato:='4'
-          else If Formato='Peri¢dico' then
-                  Formato:='5'
-          else If Formato='Cinta Audio' then
-                  Formato:='6'
-          else Formato:='7'; {tesis}
+          If Formato='Libro#' then
+                  codificaFormato:='1'
+          else If Formato='Revista#' then
+                  codificaFormato:='2'
+          else If Formato='Video#' then
+                  codificaFormato:='3'
+          else If Formato='CD-Rom#' then
+                  codificaFormato:='4'
+          else If Formato='Peri¢dico#' then
+                  codificaFormato:='5'
+          else If Formato='Cinta Audio#' then
+                  codificaFormato:='6'
+          else if Formato='Tesis#' then
+                  codificaFormato:='7';
 end;
 
 
@@ -134,48 +136,45 @@ var e,c,str:String;
 begin
 c:='';
 e:='';
+num:=0;
 posE:=0;
-posS:=1 ;
+posS:=0 ;
 for i:=1 to length(cad) do
     e[i]:=cad[i];
 repeat
 {nombre}
-str:='';
-for i:=posE+1 to posE+35 do
-    str:=str+e[i];
-quitaEspacios(str,j);
-for i:=1 to j do
-    c:=c+str[i];
-posS:=posS+j;
-posE:=posE+35;
-{apellido1}
-For m:=1 to 2 Do
-Begin
-str:='';
-for i:=posE+1 to posE+15 do
-  str:=str+e[i];
-quitaEspacios(str,j);
-for i:=1 to j do
-   c:=c+str[i];
-posS:=posS+j;
-posE:=posE+15;
-End;
+   str:='';
+   for i:=posE+1 to posE+35 do
+      str:=str+e[i];
+   quitaEspacios(str,j);
+   for i:=1 to j do
+      c:=c+str[i];
+   posS:=posS+j;
+   posE:=posE+35;
+{apellidos}
+   For m:=1 to 2 Do
+      Begin
+      str:='';
+      for i:=posE+1 to posE+15 do
+         str:=str+e[i];
+      quitaEspacios(str,j);
+      for i:=1 to j do
+          c:=c+str[i];
+      posS:=posS+j;
+      posE:=posE+15;
+      End;
+   inc(num);{incrementa numAutores}
 until (e[posE+1]=' ');
 {volkar salida}
 cad:='';
+e:='';
+e:=e+chr(num+48);
 for i:=1 to length(c) do
    e:=e+c[i];
 For i:=1 to length(e) do
     cad:=cad+e[i];
 x:=posS;
-
-
-
 end;
-
-
-
-
 
 
 procedure optimizaRegistro(ent:pagina;var sal:pagina);
@@ -214,24 +213,25 @@ begin
     sal[posS+1]:=car;
     posS:=posS+1;
     posE:=posE+4;
-
-{Formato ------> hacer codifica formato}
-
-
-
+    {Formato}
     str:='';
+    for i:=posE+1 to posE+12 do
+       str:=str+ent[i];
+    quitaEspacios(str,j);
+    car:=codificaFormato(str);
+    sal[posS+1]:=car;
     posS:=posS+1;
     posE:=posE+12;
     {Autor}
     str:='';
     for i:=posE+1 to posE+195 do
         str:=str+ent[i];       {se llenan los 3 autores en un string}
-    optimizaAutores(str,j);    {===>no funciona aun}
+    optimizaAutores(str,j);
     for i:=1 to j do
        sal[posS+i]:=str[i];
     posS:=posS+j;
     posE:=posE+195;
-    {lo siguiente k venga}
+    {lo siguiente k venga}{Materia}
 
 
 end;
