@@ -1,6 +1,6 @@
 Program ULTIMO;
 {APPTYPE CONSOLE}
-Uses crt;
+{Uses crt; }
 
 type pagina=array[1..1024] of char;
      registro=array[1..881] of char;
@@ -27,6 +27,20 @@ begin
         quitaAcentos:=chr(162)
      else if ord(x)=250 then
         quitaAcentos:=chr(163)
+     else if ord(x)=193 then
+        quitaAcentos:=chr(181)
+     else if ord(x)=201 then
+        quitaAcentos:=chr(144)
+     else if ord(x)=205 then
+        quitaAcentos:=chr(214)
+     else if ord(x)=211 then
+        quitaAcentos:=chr(224)
+     else if ord(x)=218 then
+        quitaAcentos:=chr(233)
+     else if ord(x)=170 then
+        quitaAcentos:=chr(166)
+     else if ord(x)=252 then
+        quitaAcentos:=chr(129)
      else
         quitaAcentos:=x;
 
@@ -195,7 +209,7 @@ Begin
                   codificaFormato:='3'
           else If Formato='CD-Rom#' then
                   codificaFormato:='4'
-          else If Formato='Periódico#' then
+          else If Formato='Peri¢dico#' then
                   codificaFormato:='5'
           else If Formato='Cinta Audio#' then
                   codificaFormato:='6'
@@ -210,8 +224,8 @@ Var c:String;
     i:Integer;
 Begin
       c:='';
-      for i:=1 to length(cad) do
-          cad[i]:=quitaAcentos(cad[i]);
+      {for i:=1 to length(cad) do
+          cad[i]:=quitaAcentos(cad[i]);            ====< provisional}
       if cad[length(cad)]=' ' then
          begin
          if cad[length(cad)-1]=' ' then
@@ -228,7 +242,7 @@ Begin
             Repeat
             c:=c+cad[i];
             inc(i);
-            Until cad[i]=' ';
+            Until ((cad[i]=' ') and (i=length(cad)));
             end;
          end
       else
@@ -419,6 +433,7 @@ begin
     str:='';
     for i:=posE+1 to posE+12 do
        str:=str+ent[i];
+
     quitaEspacios(str,j);
     car:=codificaFormato(str);
     sal[posS+1]:=car;
@@ -470,21 +485,21 @@ Begin
 
      assign(F,'fondo.txt');
      reset(F,1);
-     {assign(G,'fondo.opt');
-     rewrite(G,1);}
+     assign(G,'fondo.opt');
+     rewrite(G,1);
      i:=0;
      for z:=1 to 100 do
         begin
-        clrscr;
+       { clrscr; }
         blockread(F,ent,881);
         optimizaRegistro(ent,sal,y);
-        {blockwrite(G,sal,y);}
+        blockwrite(G,sal,y);
         for x:=1 to 1024 do
            write(sal[x]);
-        {writeln('escribiendo el registro numero: ',z);}
-        readkey;
+        writeln('escribiendo el registro numero: ',z);
+       { readkey;} readln;
         end;
-     readkey;
+     {readkey;} readln;
      close(F);
      close(G);
 end.
