@@ -9,9 +9,6 @@ Var   teclado,a:String;
       ent,sal:pagina;
       F:file;
 
-
-
-
 function codificaDia(dia:String):Char;
 var diaI,m:integer;
 Begin
@@ -92,13 +89,6 @@ begin
    until posicion>length(fecha);
    fechaCod:=fechaCod+codificaAnio(Str);
 end;
-
-
-
-
-
-
-
 
 
 Function CodificarFormato(Formato:String):Char;
