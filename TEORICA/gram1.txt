@@ -1,0 +1,10 @@
+S ::= d ACU | pc BUA | pu C |   e
+
+ACU :== pu C | psp
+
+ 
+
+S ::= c ACU
+
+C ::= c
+
